@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
 <jsp:include page="/layout/header.do" />
-<jsp:include page="/WEB-INF/jsp/layout/body.jsp" />
+<jsp:include page="/WEB-INF/jsp/layout/include-header.jsp" />
 </head>
 <body>
 	<form id="frm">

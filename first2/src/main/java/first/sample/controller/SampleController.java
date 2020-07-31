@@ -1,32 +1,33 @@
 package first.sample.controller;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.maven.model.Model;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import first.common.common.CommandMap;
 import first.sample.dto.LoginInfo;
+import first.sample.service.LoginService;
 import first.sample.service.SampleService;
 
 @Controller
 public class SampleController {
 	Logger log = Logger.getLogger(this.getClass());
 
-	@Resource(name="sampleService")
-	private SampleService sampleService;
-
+	@Inject
+	SampleService sampleService;
+	@Inject
+	LoginService loginService;
 
 		@RequestMapping(value="/sample/adminBoard.do")
 		public ModelAndView adminBoard(Map<String,Object> commandMap) throws Exception{
@@ -42,14 +43,42 @@ public class SampleController {
 		
 		
 		@RequestMapping(value="/layout/header.do")
-		public ModelAndView selectAdminBoard(Map<String,Object> commandMap) throws Exception{
+		public ModelAndView selectAdminBoard(Map<String,Object> commandMap, HttpSession session) throws Exception{
 			ModelAndView mv = new ModelAndView("/layout/header");
 			//commandMap.put("BGNO","00");
 			List<Map<String,Object>> listss = sampleService.selectAdminBoardsList(commandMap);
 			mv.addObject("listss", listss);
 			
+			String joininfo = (String)session.getAttribute("id");
+			LoginInfo joininfo2 = loginService.joininfo(joininfo);		
+			mv.addObject("joininfo2",joininfo2);
+			
 			return mv;
 		}
+		
+		@RequestMapping(value="/layout/header2.do")
+		public ModelAndView selectAdminBoar(Map<String,Object> commandMap) throws Exception{
+			ModelAndView mv = new ModelAndView("/layout/header2");
+
+			
+			return mv;
+		}
+		
+		@RequestMapping(value="/layout/adminBody.do")
+		public ModelAndView adminBody(Map<String,Object> commandMap) throws Exception{
+			ModelAndView mv = new ModelAndView("/layout/adminBody");
+
+			
+			return mv;
+		}
+		@RequestMapping(value="/layout/adminHeader.do")
+		public ModelAndView adminHeader(Map<String,Object> commandMap) throws Exception{
+			ModelAndView mv = new ModelAndView("/layout/adminHeader");
+
+			
+			return mv;
+		}
+		
 		
 		@RequestMapping(value="/sample/addBoard.do")
 		public ModelAndView openaddBoard(CommandMap commandMap) throws Exception{ 
@@ -70,32 +99,18 @@ public class SampleController {
 		
 
 	@RequestMapping(value="/sample/openBoardList.do")
-	public ModelAndView openSampleBoardList(Map<String,Object> commandMap) throws Exception{
+	public ModelAndView openSampleBoardList(Map<String,Object> commandMap, HttpSession session) throws Exception{
 		ModelAndView mv = new ModelAndView("/sample/firstBoardList");
-
+		
 		List<Map<String,Object>> list = sampleService.selectBoardList(commandMap);
 		mv.addObject("list", list);
-
-		return mv;
-	}
-
-	@RequestMapping(value="/sample/secondBoardList.do")
-	public ModelAndView openSampleBoardList2(Map<String,Object> commandMap) throws Exception{
-		ModelAndView mv = new ModelAndView("/sample/firstBoardList");
-
-		List<Map<String,Object>> list = sampleService.selectBoardList(commandMap);
-		mv.addObject("list", list);
-
-		return mv;
-	}
-	
-	@RequestMapping(value="/sample/thirdBoardList.do")
-	public ModelAndView openSampleBoardList3(Map<String,Object> commandMap) throws Exception{
-		ModelAndView mv = new ModelAndView("/sample/firstBoardList");
-
-		List<Map<String,Object>> list = sampleService.selectBoardList(commandMap);
-		mv.addObject("list", list);
-
+		
+		
+		String joininfo = (String)session.getAttribute("id");
+		
+		LoginInfo joininfo2 = loginService.joininfo(joininfo);		
+		mv.addObject("joininfo2",joininfo2);
+		mv.addObject("msg", "success");
 		return mv;
 	}
 	
@@ -135,9 +150,14 @@ public class SampleController {
 
 
 	@RequestMapping(value="/sample/openBoardDetail.do") 
-	public ModelAndView openBoardDetail(CommandMap commandMap) throws Exception{ 
+	public ModelAndView openBoardDetail(CommandMap commandMap, HttpSession session) throws Exception{ 
 		ModelAndView mv = new ModelAndView("/sample/boardDetail"); 
 		Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
+		
+		String joininfo = (String)session.getAttribute("id");
+		
+		LoginInfo joininfo2 = loginService.joininfo(joininfo);		
+		mv.addObject("joininfo2",joininfo2);
 
 		mv.addObject("map", map);
 		return mv; 
@@ -153,7 +173,7 @@ public class SampleController {
 
 	@RequestMapping(value="/sample/updateBoard.do") 
 	public ModelAndView updateBoard(CommandMap commandMap) throws Exception{ 
-		ModelAndView mv = new ModelAndView("redirect:/s ample/openBoardDetail.do"); 
+		ModelAndView mv = new ModelAndView("redirect:/sample/openBoardDetail.do"); 
 		sampleService.updateBoard(commandMap.getMap()); 
 
 		mv.addObject("IDX", commandMap.get("IDX"));
@@ -165,9 +185,18 @@ public class SampleController {
 		ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do"); 
 		sampleService.deleteBoard(commandMap.getMap()); 
 		
-		return mv; 
+		return mv;  
 		
 	}
 	
 
+	@RequestMapping(value="/layout/goBoardpage.do")
+	public ModelAndView goBoard(CommandMap commandMap) throws Exception{
+		ModelAndView mv = new ModelAndView("redirect:/layout/header.do");
+		
+		Map<String,Object> map = sampleService.goBoard(commandMap.getMap());
+	    mv.addObject("map", map);
+	    System.out.println("map : "+map);
+		return mv;
+	}
 }

@@ -3,7 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-	<!-- jQuery -->
+<!DOCTYPE html>
+<html lang="ko">
+
 	
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -26,21 +28,19 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <jsp:include page="/WEB-INF/jsp/layout/include-header.jsp" />
-<c:if test="${msg == 'logout' or msg == 'always'}">
-<a href="/login/main.do"><button type="button" class="btn btn-primary" >로그인</button></a>
-</c:if>
-<c:if test="${msg == 'success'}">
+  
+  
 
-<b>${id} </b> 님 환영합니다! &nbsp;&nbsp;&nbsp;
+<b>${id}</b> 님 환영합니다! &nbsp;&nbsp;&nbsp;
 
-	<a href="#this"><button type="button" class="btn" id="write">새 글</button></a>
-	<a href="/login/joinupdatepage.do"><button type="button" class="btn">정보수정</button></a>	
-	<a href="/login/logout.do"><button type="button" class="btn btn-warning" >로그아웃</button></a>		
 	
-			
-			
+	<a href="/login/joinupdatepage.do"><button type="button" class="btn">정보수정</button></a>
+		
+	<a href="/login/logout.do"><button type="button" class="btn btn-warning" >로그아웃</button></a>		
+	<a href="/sample/openBoardList.do"><button type="button" class="btn btn-success" >일반메뉴</button></a>		
+		
+	
 			<c:if test="${joininfo2.tier eq 999}">
 	<a href="/sample/adminBoard.do"><button type="button"
-			class="btn btn-success">관리자메뉴</button></a>
+			class="btn">관리자메뉴</button></a>
 			</c:if>
-</c:if>	

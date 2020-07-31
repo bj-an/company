@@ -1,7 +1,5 @@
 package first.sample.dto;
 
-import java.util.Date;
-
 public class LoginInfo {
 
 	private String id;
@@ -9,21 +7,17 @@ public class LoginInfo {
 	private String name;
 	private String email;
 	private String email2;
-
-
+	
+	
 	private String phonenum;
 	private String addr1;
 	private String addr2;
 	private String addr3;
 	private String addr4;
+	private int tier;
 	
-	
-	@Override
-	public String toString() {
-		return "LoginInfo [id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + ", email2=" + email2
-				+ ", phonenum=" + phonenum + ", addr1=" + addr1 + ", addr2=" + addr2 + ", addr3=" + addr3 + ", addr4="
-				+ addr4 + "]";
-	}
+
+
 
 
 	public String getId() {
@@ -125,7 +119,16 @@ public class LoginInfo {
 		this.addr4 = addr4;
 	}
 
-	
+
+	public int getTier() {
+		return tier;
+	}
+
+
+	public void setTier(int tier) {
+		this.tier = tier;
+	}
+
 	
 	
 

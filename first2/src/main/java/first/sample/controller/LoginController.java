@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import first.common.common.CommandMap;
 import first.sample.dto.LoginInfo;
 import first.sample.service.LoginService;
 
@@ -28,7 +27,7 @@ public class LoginController {
 	LoginService loginService;
 	
 	@Autowired
-	SampleController smapleController;
+	SampleController sampleController;
 	
 	//로그인 메인
 	@RequestMapping(value="/login/main.do")
@@ -40,24 +39,25 @@ public class LoginController {
 	
 	//로그인 기능
 	@RequestMapping(value="/login/login.do" , method=RequestMethod.POST)
-	public ModelAndView login(CommandMap commandMap,HttpSession session,LoginInfo logininfo,Model model) throws Exception{
-		logininfo.setId(String.valueOf(commandMap.get("id")));
-		logininfo.setName(String.valueOf(commandMap.get("name")));
+	public ModelAndView login(HttpSession session,LoginInfo logininfo,Model model) throws Exception{
 		
 		boolean result = loginService.login(logininfo, session);
 		ModelAndView mv = new ModelAndView();
 		
 		if (result ==true) {
 			Map<String,Object> cmMap = new HashMap<String,Object>(); 
-			mv = smapleController.openSampleBoardList(cmMap);
+			mv = sampleController.openSampleBoardList(cmMap, session);
 			
+			String joininfo = (String)session.getAttribute("id");
+			
+			LoginInfo joininfo2 = loginService.joininfo(joininfo);		
+			mv.addObject("joininfo2",joininfo2);
 			mv.addObject("msg", "success");
-			
 			
 		}else {
 		mv.setViewName("/login/loginfail");
 		mv.addObject("msg", "failure");
-		session.setAttribute("id", logininfo.getId());
+
 
 	
 		}
@@ -79,19 +79,10 @@ public class LoginController {
 	
 	//회원가입
 	@RequestMapping(value="/login/joingo.do", method=RequestMethod.POST)
-	public ModelAndView join(CommandMap commandMap,HttpSession session,Model model, LoginInfo logininfo) throws Exception {		
+	public ModelAndView join(HttpSession session,Model model, LoginInfo logininfo) throws Exception {		
 		ModelAndView mv = new ModelAndView("/login/loginmain");
 
-		logininfo.setId(String.valueOf(commandMap.get("id")));
-		logininfo.setPw(String.valueOf(commandMap.get("pw")));
-		logininfo.setName(String.valueOf(commandMap.get("name")));
-		logininfo.setPhonenum(String.valueOf(commandMap.get("phonenum")));
-		logininfo.setEmail(String.valueOf(commandMap.get("email")));
-		logininfo.setEmail(String.valueOf(commandMap.get("email2")));
-		logininfo.setAddr1(String.valueOf(commandMap.get("addr1")));
-		logininfo.setAddr2(String.valueOf(commandMap.get("addr2")));
-		logininfo.setAddr3(String.valueOf(commandMap.get("addr3")));
-		logininfo.setAddr4(String.valueOf(commandMap.get("addr4")));
+
 		
 		loginService.join(logininfo);
 		
@@ -116,10 +107,33 @@ public class LoginController {
         
         int count = 0;
         Map<Object, Object> map = new HashMap<Object, Object>();
- 
+  
         count = loginService.idcheck(userid);
         map.put("cnt", count);
  
         return map;
     }
+	
+	@RequestMapping(value="/login/joinupdatepage.do" , method=RequestMethod.GET)
+	public ModelAndView joinupdatepage(LoginInfo logininfo, Model model, HttpSession session) {
+		ModelAndView mv = new ModelAndView("/login/joinupdate");
+		
+		String joininfo = (String)session.getAttribute("id");
+		
+		LoginInfo joininfo2 = loginService.joininfo(joininfo);		
+		mv.addObject("joininfo2",joininfo2);
+	
+
+		 return mv;
+	}
+	
+	@RequestMapping(value="/login/joinupdate.do", method=RequestMethod.POST)
+	public <Joininfo> String joinupdate(LoginInfo logininfo , HttpSession session) throws Exception{
+
+		loginService.joinupdate(logininfo);
+	
+		session.invalidate();
+		return "/login/loginmain";
+	}
+	
 }

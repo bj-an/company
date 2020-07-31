@@ -12,6 +12,7 @@
 		    WRITER2,
 		    HIT_CNT,
 		    TO_CHAR(CREA_DTM , 'yyyy-mm-dd')    AS CREA_DTM
+		    
 		FROM
 		    TB_BOARD
 		WHERE
@@ -28,11 +29,14 @@
 			BGNO,
 			BONAME,
 			WRITER2,
+			ISUSE,
 			TO_CHAR(CREA_DTM , 'yyyy-mm-dd')    AS CREA_DTM
 		FROM
 			TB_BOARD_LIST
+		
 		ORDER BY BGNO
-		]]>
+		
+			]]>
 	</select>
 	
 	<insert id="insertBoard" parameterType="hashmap"> <![CDATA[ 
@@ -76,7 +80,12 @@
 		, WRITER2
 		, CREA_DTM
 		, TITLE
-		, CONTENTS FROM TB_BOARD WHERE IDX = #{IDX}
+		, CONTENTS
+		 FROM 
+		
+			TB_BOARD
+		
+		 WHERE IDX = #{IDX}
 		
 		 ]]>
 	</select>
@@ -193,6 +202,8 @@
 			
 		FROM
 			TB_BOARD_LIST
+		WHERE
+			ISUSE='Y'
 		ORDER BY BGNO
 		]]>
 	</select>
@@ -202,5 +213,258 @@
       WHERE
           ID = #{ID}
 </select>
+
+	<select id="findid" parameterType="first.sample.dto.LoginInfo"  resultType="first.sample.dto.LoginInfo">
+		<![CDATA[
+		SELECT
+			
+			ID
+			
+		FROM
+			LOGININFO
+		WHERE
+			name = #{name} AND
+			email = #{email} AND
+			email2 = #{email2}
+		]]>
+	
+	</select>
+	
+		<select id="findpw" parameterType="first.sample.dto.LoginInfo"  resultType="first.sample.dto.LoginInfo">
+		<![CDATA[
+		SELECT
+			
+			PW
+			
+		FROM
+			LOGININFO
+		WHERE
+			id = #{id} AND
+			name = #{name} AND
+			email = #{email} AND
+			email2 = #{email2}
+		]]>
+	
+	</select>
+	
+	<update id="joinupdate" >
+		UPDATE logininfo
+		
+		set	
+			pw = #{pw}
+			,email = #{email}
+			,email2 = #{email2}
+			,phonenum = #{phonenum}
+			,addr1 = #{addr1, jdbcType=VARCHAR}
+			,addr2 = #{addr2, jdbcType=VARCHAR}
+			,addr3 = #{addr3, jdbcType=VARCHAR}
+			,addr4 = #{addr4, jdbcType=VARCHAR}
+			
+						
+		WHERE
+			id = #{id}
+			 
+	
+	</update>
+	
+		<select id="joininfo" parameterType="first.sample.dto.LoginInfo"  resultType="first.sample.dto.LoginInfo">
+		SELECT 
+			 ID
+			,name
+			,email
+			,email2
+			,phonenum
+			,addr1
+			,addr2
+			,addr3
+			,addr4
+			,tier
+						
+		FROM
+			logininfo
+			
+		WHERE
+			id = #{id}
+			 
+	
+	</select>
+	
+	<select id="selectCodeList" parameterType="hashmap"
+		resultType="hashmap">
+		<![CDATA[
+		SELECT
+		    nooo,
+		    maincode,
+		    maincodename,
+		    isuse,
+		    writer,
+		    TO_CHAR(okdatedate, 'yyyy-mm-dd')    AS okdatedate
+		FROM
+		    maincodetable
+			   
+		ORDER BY maincode
+		]]>
+	</select>
+	
+	<insert id="addcode" parameterType="first.sample.dto.ManageInfo">
+		<![CDATA[
+		INSERT INTO maincodetable
+		(
+			nooo
+			,maincode
+			,maincodename
+			,isuse
+			,writer
+			,okdatedate
+		)
+		VALUES
+		(
+			nooo_seq.nextval
+			,#{maincode}
+			,#{maincodename}
+			,#{isuse}
+			,'admin2'
+			,TO_CHAR(SYSDATE , 'yyyy-mm-dd')
+			
+		)
+		]]>
+	</insert>
+	
+		<select id="selectdetailcodelist" parameterType="hashmap" resultType="hashmap">
+		 <![CDATA[ 
+		SELECT 	
+		  nooo
+		, maincode
+		, detailcode
+		, detailcodename
+		,isuse
+		,writer
+		, TO_CHAR(okdatedate  , 'yyyy-mm-dd')    AS okdatedate 
+		
+		FROM detailcodetable
+		
+		WHERE maincode = #{maincode}
+		
+		order by detailcode
+		 ]]>
+	</select>
+	
+	
+	<select id="selectmanageList" parameterType="hashmap" resultType="hashmap">
+		 <![CDATA[ 
+		SELECT 	
+
+		 id
+		, name
+		,TO_CHAR(rdate  , 'yyyy-mm-dd')    AS rdate 
+		,TO_CHAR(updatedate  , 'yyyy-mm-dd') AS updatedate 
+		,tier
+		
+		FROM logininfo
+		
+		
+		order by tier
+		 ]]>
+	</select>
+	
+	
+		<update id="updatemanaging" > 
+		<![CDATA[ 
+	UPDATE logininfo
+	
+	SET
+	 tier = #{tier}
+	
+	 WHERE
+	 id = #{id} 
+	
+	]]>
+	</update>
+	
+	<select id="cntmaincode" parameterType="first.sample.dto.ManageInfo" resultType="first.sample.dto.ManageInfo">
+		 <![CDATA[ 
+		SELECT 	
+		  maincode
+		 ,maincodename
+		 ,isuse
+		FROM 
+			maincodetable
+		WHERE
+			maincode=#{maincode}
+		]]>
+	</select>
+	
+		<update id="updatecode" > 
+		<![CDATA[ 
+	UPDATE maincodetable
+	
+	SET
+	 isuse = #{isuse}
+	 ,maincodename = #{maincodename}	
+	 
+	 WHERE
+	 maincode = #{maincode} 
+	
+	]]>
+	</update>
+
+		<select id="selectmaincodeList" parameterType="first.sample.dto.ManageInfo" resultType="first.sample.dto.ManageInfo">
+		 <![CDATA[ 
+		SELECT 	
+		 maincode
+		 ,maincodename
+		FROM 
+			maincodetable
+		
+		]]>
+	</select>
+	
+	<select id="countMainCode" parameterType="first.sample.dto.ManageInfo" resultType="first.sample.dto.ManageInfo">
+		 <![CDATA[ 
+		SELECT 	
+		 maincode
+	
+		FROM 
+		maincodetable	
+		
+		WHERE 
+		maincode = #{maincode}
+		 ]]>
+	</select>
+		
+		
+		
+		<select id="selectmaincode" parameterType="first.sample.dto.ManageInfo" resultType="first.sample.dto.ManageInfo">
+		 <![CDATA[ 
+		SELECT 	
+		  maincode
+		 ,maincodename
+		 
+	
+		FROM 
+		maincodetable	
+		
+		WHERE 
+		maincode = #{maincode}
+		 ]]>
+	</select>
+	
+	<select id="goBoard" parameterType="hashmap" resultType="hashmap">
+		 <![CDATA[ 
+		SELECT 	
+		 SELECT
+		    IDX,
+		    TITLE,
+		    WRITER2,
+		    HIT_CNT,
+		    TO_CHAR(CREA_DTM , 'yyyy-mm-dd')    AS CREA_DTM
+		FROM
+		    TB_BOARD
+		WHERE
+			DEL_GB = 'N'  AND
+			BGNO = #{BGNO}  
+		ORDER BY IDX 
+		 ]]>
+	</select>
 	
 </mapper>

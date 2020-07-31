@@ -22,5 +22,7 @@ public interface SampleService {
 
 	List<Map<String, Object>> selectAdminBoardsList(Map<String, Object> map) throws Exception;
 
+	Map<String, Object> goBoard(Map<String, Object> map) throws Exception;
+
 
 }

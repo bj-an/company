@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
+<jsp:include page="/WEB-INF/jsp/layout/include-header.jsp" />
 <jsp:include page="/layout/header.do" />
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -15,7 +15,7 @@
 		});
 		function fn_openBoardList() {
 			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("/sample/openBoardList.do");
+			comSubmit.setUrl("/sample/openBoard      List.do");
 			comSubmit.submit();
 		}
 		
@@ -47,10 +47,9 @@
 	</script>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/jsp/layout/body.jsp" />
 	<form id="frm">
 		<table class="board_view">
-			<colgroup>
+			<colgroup> 
 				<col width="15%">
 				<col width="*" />
 			</colgroup>

@@ -60,4 +60,12 @@ public class SampleServiceImpl implements SampleService{
 		sampleDAO.insertAddBoard(map);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> goBoard(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String, Object> resultMap = sampleDAO.goBoard(map);
+		return resultMap;
+	}
+
 }

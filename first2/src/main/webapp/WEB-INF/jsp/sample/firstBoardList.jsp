@@ -1,24 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<jsp:include page="/layout/header.do" />
-<jsp:include page="/WEB-INF/jsp/layout/body.jsp" />
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
-
-<head>
-<title>first</title>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<jsp:include page="/layout/header2.do" />
+<jsp:include page="/WEB-INF/jsp/layout/include-header.jsp" />
+
+<title>일반게시판</title>
+<style>
+.table{
+    width: 85%;
+    max-width: 100%;
+    margin-bottom: 20px;
+
+    float: right;
+    
+}
+
+</style>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#write").on("click", function(e) { //새 글 버튼
@@ -33,40 +35,39 @@
 
 	});
 	function fn_openBoardWrite() {
-
 		var comSubmit = new ComSubmit();
 		comSubmit.setUrl("/sample/openBoardWrite.do");
 		comSubmit.submit();
 	}
 
 	function fn_openBoardDetail(obj) {
-		var comSubmit = new ComSubmit();
+		var comSubmit = new ComSubmit(); 
 		comSubmit.setUrl("/sample/openBoardDetail.do");
 		comSubmit.addParam("IDX", obj.parent().find("#IDX").val());
 		comSubmit.submit();
 
+	
 	}
+
 	
 </script>
 </head>
-<body>
-	<h2>일반 게시판1</h2>
+	<body>
+
+
+<jsp:include page="/layout/header.do" />
+
 
 	<table class="table table-bordered">
 
-		<colgroup>
-			<col width="10%" />
-			<col width="*" />
-			<col width="15%" />
-			<col width="20%" />
-		</colgroup>
+	
 		<thead>
 			<tr>
-				<th scope="col">NO.</th>
-				<th scope="col">제목</th>
-				<th scope="col">등록자</th>
-				<th scope="col">조회수</th>
-				<th scope="col">등록일</th>
+				<th>NO.</th>
+				<th>제목</th>
+				<th>등록자</th>
+				<th>조회수</th>
+				<th>등록일</th>
 			</tr>
 		</thead>
 		<tbody>

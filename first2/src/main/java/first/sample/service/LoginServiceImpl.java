@@ -54,6 +54,19 @@ public class LoginServiceImpl implements LoginService{
 		return sampleDAO.idcheck(userid);
 	}
 
+	@Override
+	public void joinupdate(LoginInfo logininfo) throws Exception{
+
+		sampleDAO.joinupdate(logininfo);
+	}
+
+	@Override
+	public LoginInfo joininfo(String joininfo) {
+		return sampleDAO.joininfo(joininfo);
+	}
+
+
+
 	
 
 	

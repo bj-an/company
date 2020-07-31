@@ -181,67 +181,10 @@ to {
 </head>
 <body>
 	<div class="container">
-	
+
 		<h2>
-			아이디 찾기
+			아이디 찾기 실패
 		</h2>
-
-		
-			<div id="searchId">
-				<div class="group">
-					<input type="text" name="name" id="name" required> <span
-						class="highlight"></span> <span class="bar"></span> <label>이름</label>
-
-				</div>
-
-				<div class="group">
-					<input type="text" name="email" id="email" required> <span
-						class="highlight"></span> <span class="bar"></span> <label>ENTER EMAIL ID</label>
-				</div>
-				<div>
-				<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@</span>
-				</div>
-				<div class="group">
-					<input type="text" name="email2" id="email2" required> <span
-						class="highlight"></span> <span class="bar"></span> <label>EX)NAVER.COM</label>
-				</div>
-
-				<div class="form-group">
-					<input type="button" id="searchBtn" name="searchBtn"
-						class="btn btn-primary btn-block" onclick="btn();" value="확인"/>
-					<a href='#' onclick='history.back(); return false;'><button>취소</button></a>
-
-				</div>
-				<div class="form-group">
-					<span id="findid"></span>
-				</div>
-			</div>
-			</div>
-		<script>
-    	function btn() {
-    		var username =  $("#name").val(); 
-            var useremail =  $("#email").val(); 
-            var useremail2 =  $("#email2").val(); 
-            
-            
-            var postData = {'name' : username , 'email' : useremail , 'email2' : useremail2};
-            $.ajax({
-
-            	type : 'POST',
-                data : postData,
-                url : "/login/findid.do",
-                dataType: "text",
-                success : function(data) {
-				 $("#findid").html("<h2>회원님의 정보로 등록된 ID는 : "+ < data >+" 입니다.</h2>")
-                },
-                error : function(error) {
-                    
-                    alert("error : " + error);
-                }
-            });
-    	}
-    
-    </script>
 
 
 </body>

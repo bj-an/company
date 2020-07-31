@@ -16,6 +16,12 @@ public interface LoginService {
 
 	public int idcheck(String userid);
 
+	public void joinupdate(LoginInfo logininfo) throws Exception;
+
+	public LoginInfo joininfo(String joininfo);
+
+	
+
 	
 	
 }
